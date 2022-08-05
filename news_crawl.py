@@ -194,7 +194,7 @@ def search_news(batch_start_date, batch_end_date):
 
 # helper method to define timeframe in which we are conducting news search for archive
 def set_no_of_days():
-    no_of_days = 14 # update to 730 eventually (2 yrs)
+    no_of_days = 730 # update to 730 eventually (2 yrs)
 
     return no_of_days
 
@@ -444,6 +444,10 @@ def main():
 
     # recurring on scheduler
     schedule.every(24).hours.do(scrape_news_live).tag('scrape_news_live')
+
+    all_jobs = schedule.get_jobs()
+    print(all_jobs)
+
 
     
 
