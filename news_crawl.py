@@ -348,7 +348,14 @@ def insert_data_to_db(results):
 
     print("Loading data into DB...")
 
-    conn = pymysql.connect(host ='localhost', user = 'root', password= 'password', db = 'news')
+    # conn = pymysql.connect(host ='localhost', user = 'root', password= 'password', db = 'news')
+    host = 'us-cdbr-east-06.cleardb.net'
+    user='b1a7188f4544ce'
+    pwd='677219fe'
+    db='heroku_bde828921e55901'
+    conn = pymysql.connect(host = host, user = user, password= pwd, db = db)
+    
+    # conn= pymysql.connect('mysql://b1a7188f4544ce:677219fe@us-cdbr-east-06.cleardb.net/heroku_bde828921e55901?reconnect=true')
     cursor = conn.cursor()
     # json_data = json.dumps(results, indent=4, sort_keys=True, default=str)
     for result in results:
@@ -360,24 +367,24 @@ def insert_data_to_db(results):
             esc_link = conn.escape_string(result["url"])
             esc_title = conn.escape_string(result["title"])
 
-            sql_select_query = "select * from news.News where url='" + result["url"] + "'"
+            sql_select_query = "select * from News where url='" + result["url"] + "'"
             cursor.execute(sql_select_query)
             cursor.fetchall()
             
             if cursor.rowcount != 0:
                 if result["cat_bto"] == True:
-                    sql_update_cat = "update news.News set cat_bto=1 where url='" + result["url"] + "'"
+                    sql_update_cat = "update News set cat_bto=1 where url='" + result["url"] + "'"
                 elif result["cat_ec"] == True:
-                    sql_update_cat = "update news.News set cat_ec=1 where url='" + result["url"] + "'"
+                    sql_update_cat = "update News set cat_ec=1 where url='" + result["url"] + "'"
                 elif result["cat_finance"] == True:
-                    sql_update_cat = "update news.News set cat_finance=1 where url='" + result["url"] + "'"
+                    sql_update_cat = "update News set cat_finance=1 where url='" + result["url"] + "'"
                 elif result["cat_resale"] == True:
-                    sql_update_cat = "update news.News set cat_resale=1 where url='" + result["url"] + "'"
+                    sql_update_cat = "update News set cat_resale=1 where url='" + result["url"] + "'"
                 cursor.execute(sql_update_cat)
                 conn.commit()
             else:
                 try:
-                    sql = "insert into news.News (newsId, date, source, title, url, cat_bto, cat_ec, cat_finance, cat_resale) values ('{newsId}','{date}','{source}','{esc_title}','{esc_link}',{cat_bto},{cat_ec},{cat_finance},{cat_resale})".format(newsId=result["newsId"], date=result["date"], source=result["source"],esc_title=esc_title, esc_link=esc_link, cat_bto=int(result["cat_bto"]), cat_ec= int(result["cat_ec"]),cat_finance=int(result["cat_finance"]),cat_resale=int(result["cat_resale"]))
+                    sql = "insert into News (newsId, date, source, title, url, cat_bto, cat_ec, cat_finance, cat_resale) values ('{newsId}','{date}','{source}','{esc_title}','{esc_link}',{cat_bto},{cat_ec},{cat_finance},{cat_resale})".format(newsId=result["newsId"], date=result["date"], source=result["source"],esc_title=esc_title, esc_link=esc_link, cat_bto=int(result["cat_bto"]), cat_ec= int(result["cat_ec"]),cat_finance=int(result["cat_finance"]),cat_resale=int(result["cat_resale"]))
                     cursor.execute(sql)
                     conn.commit()
                 except pymysql.IntegrityError as e:
@@ -410,10 +417,12 @@ def scrape_news_archive():
         extracted_fields = extract_required_fields(search_results=search_result)
         results.extend(extracted_fields)
         batch_start_date, batch_end_date = move_back_date_window(batch_start_date=batch_start_date, batch_end_date=batch_end_date)
+        insert_data_to_db(results=results)
+        results = []
         time.sleep(1)
 
     # print(json.dumps(results, indent=4, sort_keys=False, default=str))
-    insert_data_to_db(results=results)
+    # insert_data_to_db(results=results)
     print("COMPLETED UPLOADING OF ARCHIVE")
 
 
