@@ -1,0 +1,1 @@
+worker: python news_crawl.py
