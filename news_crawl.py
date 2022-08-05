@@ -355,8 +355,6 @@ def insert_data_to_db(results):
     db='heroku_bde828921e55901'
     conn = pymysql.connect(host = host, user = user, password= pwd, db = db)
     
-    # conn= pymysql.connect('mysql://b1a7188f4544ce:677219fe@us-cdbr-east-06.cleardb.net/heroku_bde828921e55901?reconnect=true')
-    cursor = conn.cursor()
     # json_data = json.dumps(results, indent=4, sort_keys=True, default=str)
     for result in results:
         # for entry in result["entries"]:
@@ -452,7 +450,7 @@ def main():
 
     all_jobs = schedule.get_jobs()
     print(all_jobs)
-    
+
 
 if __name__ == "__main__":
   main()
