@@ -310,7 +310,6 @@ def extract_required_fields(search_results):
 # contain the following listed source we want
 def filter_source(result):
 
-    print(result)
     listed_source = [
         "HDB",
         "Housing & Development Board",
@@ -338,7 +337,6 @@ def filter_source(result):
             exist_in_list = True
             break          
 
-    print(exist_in_list)
     return exist_in_list
 
 
@@ -363,7 +361,6 @@ def insert_data_to_db(results):
             esc_title = conn.escape_string(result["title"])
 
             sql_select_query = "select * from news.News where url='" + result["url"] + "'"
-            print(sql_select_query)
             cursor.execute(sql_select_query)
             cursor.fetchall()
             
@@ -381,7 +378,6 @@ def insert_data_to_db(results):
             else:
                 try:
                     sql = "insert into news.News (newsId, date, source, title, url, cat_bto, cat_ec, cat_finance, cat_resale) values ('{newsId}','{date}','{source}','{esc_title}','{esc_link}',{cat_bto},{cat_ec},{cat_finance},{cat_resale})".format(newsId=result["newsId"], date=result["date"], source=result["source"],esc_title=esc_title, esc_link=esc_link, cat_bto=int(result["cat_bto"]), cat_ec= int(result["cat_ec"]),cat_finance=int(result["cat_finance"]),cat_resale=int(result["cat_resale"]))
-                    # print(sql)
                     cursor.execute(sql)
                     conn.commit()
                 except pymysql.IntegrityError as e:
@@ -448,8 +444,6 @@ def main():
     all_jobs = schedule.get_jobs()
     print(all_jobs)
 
-
-    
 
 if __name__ == "__main__":
   main()
