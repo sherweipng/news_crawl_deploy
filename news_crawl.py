@@ -349,10 +349,10 @@ def insert_data_to_db(results):
     print("Loading data into DB...")
 
     # conn = pymysql.connect(host ='localhost', user = 'root', password= 'password', db = 'news')
-    host = 'us-cdbr-east-06.cleardb.net'
-    user='b1a7188f4544ce'
-    pwd='677219fe'
-    db='heroku_bde828921e55901'
+    host = 'localhost'
+    user='root'
+    pwd='password'
+    db='news'
     conn = pymysql.connect(host = host, user = user, password= pwd, db = db)
     
     # json_data = json.dumps(results, indent=4, sort_keys=True, default=str)
