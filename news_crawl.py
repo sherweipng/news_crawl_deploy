@@ -349,12 +349,13 @@ def insert_data_to_db(results):
     print("Loading data into DB...")
 
     # conn = pymysql.connect(host ='localhost', user = 'root', password= 'password', db = 'news')
+    
     host = 'localhost'
     user='root'
     pwd='password'
     db='news'
     conn = pymysql.connect(host = host, user = user, password= pwd, db = db)
-    
+    cursor = conn.cursor()
     # json_data = json.dumps(results, indent=4, sort_keys=True, default=str)
     for result in results:
         # for entry in result["entries"]:
